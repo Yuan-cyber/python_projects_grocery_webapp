@@ -1,6 +1,8 @@
 from datetime import datetime
 from sql_connection import get_sql_connection
 
+// order对应数据库中的一个表格，在python中每个order的数据类型是一个字典，包含多个键值对比如: "customer_name", "John Doe"
+// order_details也是其中一个key，对应包含多条订单详情的列表
 def insert_order(connection, order):
     cursor = connection.cursor()
 
@@ -16,14 +18,19 @@ def insert_order(connection, order):
                            "(order_id, product_id, quantity, total_price)"
                            "VALUES (%s, %s, %s, %s)")
 
+    // 创建一个空的列表 
     order_details_data = []
+    
+    // 遍历 order中的['order_details'] 列表
     for order_detail_record in order['order_details']:
+        // 将每一条订单详情以列表的形式添加到order_details_data 
         order_details_data.append([
             order_id,
             int(order_detail_record['product_id']),
             float(order_detail_record['quantity']),
             float(order_detail_record['total_price'])
         ])
+    // 将所有数据插入order_details表中
     cursor.executemany(order_details_query, order_details_data)
 
     connection.commit()
