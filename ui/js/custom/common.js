@@ -22,6 +22,8 @@ function callApi(method, url, data) {
 function calculateValue() {
     var total = 0;
     $(".product-item").each(function( index ) {
+        /* 对每个 product-item，通过 find('.product-qty') 查找该产品的数量输入框，并获取用户输入的数量，
+        val() 方法用于获取输入框的值，然后使用 parseFloat() 将其转换为浮点数 */
         var qty = parseFloat($(this).find('.product-qty').val());
         var price = parseFloat($(this).find('#product_price').val());
         price = price*qty;
